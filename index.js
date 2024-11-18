@@ -22,7 +22,7 @@ app.use("/get",express.static(__dirname+"/uploads/file.jpeg"))
 let storedFileUrl = '';
 const diskStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-            cb(null, __dirname+`uploads/`);
+            cb(null,  "uploads/");
            // console.log("file dest", file);
     },
     filename: (req, file, cb) => {
