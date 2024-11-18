@@ -17,7 +17,7 @@ const app = express();
 // });
 let file;
 app.use(express.static(__dirname+"/public/"))
-app.use("/get",express.static("/uploads/file.jpeg"))
+app.use("/get",express.static(__dirname+"/uploads/file.jpeg"))
 // Placeholder for storing file URL
 let storedFileUrl = '';
 const diskStorage = multer.diskStorage({
