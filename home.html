@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D printer</title>
+    <style>
+        body {
+            background-color: #F5F5F5; /* اللون off-white */
+            font-family: Arial, sans-serif;
+        }
+        header, footer {
+            background-color: #6C757D; /* اللون الرمادي للتمييز */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="file"], input[type="submit"] {
+            display: block;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #6C757D;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>3D printer</h1>
+    </header>
+    <div class="container">
+        <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
+            <label for="myfile">Upload file</label>
+            <input type="file" id="myfile" name="hexacode">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 3D Printing Services</p>
+    </footer>
+</body>
