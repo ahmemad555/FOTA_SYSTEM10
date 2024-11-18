@@ -7,6 +7,10 @@
     <style>
         body {
             background-color: #F5F5F5; /* اللون off-white */
+            background-image:url("https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-1/451698333_2145053532544554_3121728430121932610_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=pLni2c_EVXIQ7kNvgEHY6S-&_nc_zt=24&_nc_ht=scontent-hbe1-2.xx&_nc_gid=Az4Ca42TvoT2nm2Vb0XzoEF&oh=00_AYAGOSUKml6YDm_e375d4zpRUDVT2zf7ibPQDc4cTGXjFg&oe=67404F2E") ;
+            background-repeat:no-repeat;
+            background-position: right;
+            /* background-size: 60%; */
             font-family: Arial, sans-serif;
         }
         header, footer {
@@ -51,7 +55,7 @@
         <h1>3D printer</h1>
     </header>
     <div class="container">
-        <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
+        <form action="../upload" method="post" enctype="multipart/form-data">
             <label for="myfile">Upload file</label>
             <input type="file" id="myfile" name="hexacode">
             <input type="submit" value="Submit">
