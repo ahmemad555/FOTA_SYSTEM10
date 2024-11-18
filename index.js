@@ -63,19 +63,19 @@ app.post('/upload', upload.single('hexacode'), async (req, res) => {
     // fs.unlinkSync(filePath);
 
     // Return ABI (simulated for example purposes)
-    fs.writeFile("files.json", `
-      {
-        "filename":"${req.fileName}"
-      }
+    // fs.writeFile("files.json", `
+    //   {
+    //     "filename":"${req.fileName}"
+    //   }
       
-      `, (err) => {
-      if (err) console.log(err);
-      else {
-          console.log("File written successfully\n");
-          console.log("The written file has the following contents:");
-          console.log(fs.readFileSync("books.txt", "utf8"));
-      }
-    });
+    //   `, (err) => {
+    //   if (err) console.log(err);
+    //   else {
+    //       console.log("File written successfully\n");
+    //       console.log("The written file has the following contents:");
+    //       //console.log(fs.readFileSync("books.txt", "utf8"));
+    //   }
+    // });
     const abi = { message: 'file  created successfully'};
     res.json(abi);
   } catch (error) {
