@@ -16,7 +16,7 @@ const app = express();
 //     api_secret:"Pv53x9A3EkgBa3b_1H7O1Wu_sWc"
 // });
 let file;
-app.use("/",express.static("./public/"))
+app.use(express.static(__dirname+"/public/"))
 app.use("/get",express.static("/uploads/file.jpeg"))
 // Placeholder for storing file URL
 let storedFileUrl = '';
