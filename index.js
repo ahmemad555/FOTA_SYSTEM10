@@ -3,6 +3,7 @@ const multer = require('multer');
 const { v2: cloudinary } = require('cloudinary');
 const fs = require('fs');
 const path = require('path');
+const body_parser=require("body-parser")
 
 // Initialize app and middleware
 const app = express();
@@ -16,13 +17,15 @@ const app = express();
 //     api_secret:"Pv53x9A3EkgBa3b_1H7O1Wu_sWc"
 // });
 let file;
+app.use(body_parser.urlencoded({extended:true}))
+app.use(body_parser.json())
 app.use(express.static(__dirname+"/public/"))
 app.use("/get",express.static(__dirname+"/uploads/file.jpeg"))
 // Placeholder for storing file URL
 let storedFileUrl = '';
 const diskStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-            cb(null,  __dirname+"uploads/");
+            cb(null, "uploads/");
            // console.log("file dest", file);
     },
     filename: (req, file, cb) => {
