@@ -70,14 +70,15 @@ const authController = {
             throw new AppError('user already exists  ', 400);
         }
         // إنشاء المستخدم الجديد
-        const verificationToken =await generateToken({ _id: user._id, userId , name}  , '30m');
 
         const user=new User({
             userId,
             password:bcrypt.hashSync(password, 10),
             name,
-            verificationToken
+            
         })
+        const verificationToken =await generateToken({ _id: user._id, userId , name}  , '30m');
+        user.verificationToken=verificationToken;
         await user.save();
        
         res.status(201).json({

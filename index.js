@@ -5,7 +5,7 @@ const connectMongoose = require("./utils/connectMongoose");
 const Logger = require("./utils/logger");
 const path = require('path');
 // تهيئة متغيرات البيئة
-dotenv.config();
+dotenv.config(); 
 
 const app = express();
 const port = process.env.PORT || 3000; 
@@ -33,7 +33,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 
 const uploadRoutes=require("./routes/uploadRoutes")
-// app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
 
 app.use("/api/auth", authRoutes); 
