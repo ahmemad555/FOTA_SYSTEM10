@@ -1,114 +1,88 @@
-const express = require('express');
-const multer = require('multer');
-const { v2: cloudinary } = require('cloudinary');
-const fs = require('fs');
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const connectMongoose = require("./utils/connectMongoose");
+const Logger = require("./utils/logger");
 const path = require('path');
-const body_parser=require("body-parser")
+// تهيئة متغيرات البيئة
+dotenv.config();
 
-// Initialize app and middleware
 const app = express();
-// const upload = multer({ dest: 'uploads/' });
+const port = process.env.PORT || 3000; 
 
-// Configure Cloudinary
-// cloudinary.config({ 
-//     cloud_name:"dlxwpay7b",
-//     secure:true,
-//     api_key:"957197717412299",
-//     api_secret:"Pv53x9A3EkgBa3b_1H7O1Wu_sWc"
-// });
-let file;
-app.use(body_parser.urlencoded({extended:true}))
-app.use(body_parser.json())
-app.use(express.static(__dirname+"/public/"))
-app.use("/get",express.static(__dirname+"/uploads/file.jpeg"))
-// Placeholder for storing file URL
-let storedFileUrl = '';
-const diskStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-            cb(null, __dirname+"/uploads/");
-           // console.log("file dest", file);
-    },
-    filename: (req, file, cb) => {
-            const ext = file.mimetype.split("/")[1];
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-            const filename = `file.${ext}`;
-           console.log("filename:", filename);
-            req.fileName=filename;
-            cb(null, filename);
-    },
-});const fileFilter = (req, file, cb) => {
-    const imageType = file.mimetype.split("/")[1];
-    if (imageType == "jpg"||"jpeg") {
-            return cb(null, true);
-    } else {
-            return cb("I don't have a clue!", false);
+app.use(cors());
+
+// Logging middleware
+app.use((req, res, next) => {
+    Logger.info(`${req.method} ${req.path}`, {
+        query: req.query,
+        body: req.body,
+        ip: req.ip
+    });
+    next();
+});
+ 
+// Routes
+
+const authRoutes = require("./routes/authRoutes");
+
+const userRoutes = require("./routes/userRoutes");
+
+const uploadRoutes=require("./routes/uploadRoutes")
+// app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static('uploads'));
+
+app.use("/api/auth", authRoutes); 
+app.use("/api/users", userRoutes);
+app.use("/api/upload",uploadRoutes)
+
+app.get("*", (req, res) => { 
+    Logger.info('Root endpoint accessed');  
+    res.send("not found api");
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    // تسجيل تفاصيل الخطأ
+    Logger.error('Server Error:', {
+        message: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method,
+        statusCode: err.statusCode || 500,
+        body: req.body,
+        params: req.params,
+        query: req.query
+    });
+    
+    // إرسال رسالة الخطأ للمستخدم
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message || 'حدث خطأ في الخادم',
+        error: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+});
+
+// تشغيل السيرفر والاتصال بقاعدة البيانات
+(async () => {
+    try {
+        // الاتصال بقاعدة البيانات
+        await connectMongoose.connectDB(); 
+        
+        // تشغيل السيرفر
+        app.listen(port, () => {
+            Logger.info(`🚀 Server is running on port ${port}`);
+        });
+    } catch (error) {
+        Logger.error('Failed to start server:', {
+            error: error.message,
+            stack: error.stack
+        });
+        process.exit(1);
     }
-};
-const upload = multer({
-    storage: diskStorage,
-    fileFilter,
-});
-
-// POST route for receiving and processing the file
-app.post('/upload', upload.single('hexacode'), async (req, res) => {
-  try {
-    // const filePath = path.resolve(req.file.path);
-
-    // Upload the file to Cloudinary
-    // const result = await cloudinary.uploader.upload(filePath, {
-    //   resource_type: 'raw' // Use raw for non-image files
-    // });
-
-    // Store the file URL
-    // storedFileUrl = result.secure_url;
-
-    // Delete the file from the local server after upload
-    // fs.unlinkSync(filePath);
-
-    // Return ABI (simulated for example purposes)
-    // fs.writeFile("files.json", `
-    //   {
-    //     "filename":"${req.fileName}"
-    //   }
-      
-    //   `, (err) => {
-    //   if (err) console.log(err);
-    //   else {
-    //       console.log("File written successfully\n");
-    //       console.log("The written file has the following contents:");
-    //       //console.log(fs.readFileSync("books.txt", "utf8"));
-    //   }
-    // });
-    const abi = { message: 'file  created successfully'};
-    res.json(abi);
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    res.status(500).send('An error occurred while processing the file');
-  }
-});
-
-
-
-// GET route for retrieving the file URL
-let name;
-app.get('/abi', (req, res) => {
-  fs.readFile('files.json', 'utf8', function (err, data) {
-    // Display the file content
-    name=JSON.parse(data).filename;
-    console.log(jsData.filename)
-});
-
-let file;
-
-fs.readFile(`/uploads/${name}`, 'utf8', function (err, data) {
-  // Display the file content
- file=data;
-});
-res.file("/upload")
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+})();
+ 

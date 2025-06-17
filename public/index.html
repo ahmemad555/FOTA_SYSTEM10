@@ -1,67 +1,79 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D printer</title>
-    <style>
-        body {
-            background-color: #F5F5F5; /* اللون off-white */
-            background-image:url("https://scontent-hbe1-2.xx.fbcdn.net/v/t39.30808-1/451698333_2145053532544554_3121728430121932610_n.jpg?stp=dst-jpg_s200x200&_nc_cat=108&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=pLni2c_EVXIQ7kNvgEHY6S-&_nc_zt=24&_nc_ht=scontent-hbe1-2.xx&_nc_gid=Az4Ca42TvoT2nm2Vb0XzoEF&oh=00_AYAGOSUKml6YDm_e375d4zpRUDVT2zf7ibPQDc4cTGXjFg&oe=67404F2E") ;
-            background-repeat:no-repeat;
-            background-position: right;
-            /* background-size: 60%; */
-            font-family: Arial, sans-serif;
-        }
-        header, footer {
-            background-color: #6C757D; /* اللون الرمادي للتمييز */
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="file"], input[type="submit"] {
-            display: block;
-            margin-bottom: 15px;
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="submit"] {
-            background-color: #6C757D;
-            color: white;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #5a6268;
-        }
-    </style>
+    <title>الرئيسية - CodeMinds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-    <header>
-        <h1>3D printer</h1>
-    </header>
-    <div class="container">
-        <form action="../upload" method="post" enctype="multipart/form-data">
-            <label for="myfile">Upload file</label>
-            <input type="file" id="myfile" name="hexacode">
-            <input type="submit" value="Submit">
-        </form>
-    </div>
-    <footer>
-        <p>&copy; 2024 3D Printing Services</p>
-    </footer>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <a href="./index.html">
+                        <img src="./imgs/logo.png" alt="CodeMinds Logo">
+                    </a>
+                </div>
+                <div id="authButtons" class="nav-buttons">
+                    <a href="./login.html" class="btn">تسجيل الدخول</a>
+                    <a href="./register.html" class="btn btn-primary">إنشاء حساب</a>
+                </div>
+                <div id="userMenu" style="display: none;">
+                    <span id="userName"></span>
+                    <button id="logoutButton" onclick="handleLogout()" class="btn" data-original-text="تسجيل الخروج">
+                        تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h1>تعلم البرمجة مع CodeMinds</h1>
+                <p class="hero-text">منصة تعليمية متكاملة لتعلم البرمجة وتطوير المهارات</p>
+                <div class="hero-buttons">
+                    <a href="./register.html" class="btn btn-primary">ابدأ الآن مجاناً</a>
+                    <a href="#features" class="btn btn-secondary">تعرف على المزيد</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title">مميزات المنصة</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>دورات تعليمية</h3>
+                        <p>دورات متنوعة في مختلف مجالات البرمجة</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>تدريب عملي</h3>
+                        <p>تطبيق عملي ومشاريع واقعية</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <section class="courses-section">
+        <div class="container">
+            <h2 class="section-title">كورساتنا</h2>
+            <div class="courses-grid">
+                <!-- سيتم إضافة كورسات هنا ديناميكياً -->
+            </div>
+        </div>  
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="./js/utils/logger.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/home.js"></script>
 </body>
+</html> 
