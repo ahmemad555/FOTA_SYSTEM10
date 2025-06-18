@@ -64,23 +64,26 @@ const sendVerificationChangePasswordEmail = async (email, name, verificationUrl)
 const authController = {
     // تسجيل مستخدم جديد
     register: asyncHandler(async (req, res) => {
-        const { userId, password, name} = req.body;
-        // const existingUser = await User.findOne({ userId });
-        // if (existingUser ) {
-        //     throw new AppError('user already exists  ', 400);
-        // }
+        const { email, password, name} = req.body;
+        const existingUser = await User.findOne({ email });
+        if (existingUser ) {
+            throw new AppError('user already exists  ', 400);
+        }
         // إنشاء المستخدم الجديد
 
         const user=new User({
-            userId,
+            email,
             password:bcrypt.hashSync(password, 10),
             name,
             
         })
-        const verificationToken =await generateToken({ _id: user._id, userId , name}  , '30m');
+        const verificationToken =await generateToken({ _id: user._id, email , name}  , '30m');
         user.verificationToken=verificationToken;
         await user.save();
        
+
+        // send verification email
+        await sendVerificationEmail(email, name, `${process.env.BASE_URL}/auth/verify/${verificationToken}`);
         res.status(201).json({
             success: true,
             message: 'user created successfully',
@@ -91,9 +94,9 @@ const authController = {
 
     // تسجيل الدخول
     login: asyncHandler(async (req, res) => {
-        const { userId, password } = req.body;  
+        const { email, password } = req.body;  
 
-        let user = await User.findOne({ userId })
+        let user = await User.findOne({ email })
         // .populate('profileRef')
   
         if (!user ) {
@@ -106,7 +109,7 @@ const authController = {
   
         
         // إنشاء توكن جديد وتحديث التوكن القديم
-        const authToken = generateToken({ id: user._id,userId:user.userId },'1d');
+        const authToken = generateToken({ id: user._id,email:user.email },'1d');
         user.authToken = authToken;
         await user.save();   
         // خطوة 1: populate لـ profileRef 
@@ -128,29 +131,25 @@ const authController = {
             const decoded = verifyToken(token);
             if( !decoded){
                 throw new AppError('Invalid token', 401);
-            }
-            const {name, email, password,phone} = decoded;
+            } 
+            const {email,name,} = decoded;
             const existingUser=await User.findOne({email});
             console.log("exist user ",existingUser);
             
-            if (existingUser) {
+            if (existingUser && existingUser.verified) {
                 let msg=await fs.readFile(
                     path.join(__dirname,"../public/email/responses/message.html")
                     ,"utf-8" 
                 )
-                msg =msg.replace('{{message}}',"user is already exist please login ")
-                msg=msg.replace('{{subject}}',"exist user")
+                msg =msg.replace('{{message}}',"user is already exist and verified")
+                msg=msg.replace('{{subject}}',"already verified")
                 res.end(msg);      
                 return;
             }   
             const hashedPassword=bcrypt.hashSync(password, 10); 
-            
-            await User.create({
-                name,
-                email,
-                password:hashedPassword,
-                phone,
-            });
+     
+            existingUser.verified=true;
+            await existingUser.save();
             
             // قراءة صفحة النجاح
             let successHtml = await fs.readFile(

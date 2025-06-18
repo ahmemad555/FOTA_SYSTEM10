@@ -2,11 +2,10 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
-    userId: {
+    email: {
         type: String,
         unique:[true,"user is already exist"],
-        required: [true, 'userId is required'],
-        minlength: [3, 'user id  must be at least 3 characters long'],
+        required: [true, 'email is required'],
         trim: true
     },
     name:{
@@ -18,9 +17,13 @@ const userSchema = new mongoose.Schema({
         minlength: [8, 'password must be at least 8 characters long'],
         required: [true, 'password is required']
     },
+    verified:{
+        type:Boolean,
+        default:false
+    },
     role: {
         type: String,
-        enum: ['user','student', 'instructor', 'manager', 'admin'],
+        enum: ['manager', 'admin','user'],
         default: 'user'
     },
     authToken: String,
