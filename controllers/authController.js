@@ -65,10 +65,10 @@ const authController = {
     // تسجيل مستخدم جديد
     register: asyncHandler(async (req, res) => {
         const { userId, password, name} = req.body;
-        const existingUser = await User.findOne({ userId });
-        if (existingUser ) {
-            throw new AppError('user already exists  ', 400);
-        }
+        // const existingUser = await User.findOne({ userId });
+        // if (existingUser ) {
+        //     throw new AppError('user already exists  ', 400);
+        // }
         // إنشاء المستخدم الجديد
 
         const user=new User({

@@ -47,13 +47,13 @@ const userSchema = new mongoose.Schema({
 });
 
 // حذف الـ index القديم عند تشغيل التطبيق
-userSchema.pre('save', async function() {
-    try {
-        await this.collection.dropIndex('email_1');
-    } catch (error) {
-        // تجاهل الخطأ إذا لم يكن الـ index موجوداً
-    }
-});
+// userSchema.pre('save', async function() {
+//     try {
+//         await this.collection.dropIndex('userId_1');
+//     } catch (error) {
+//         // تجاهل الخطأ إذا لم يكن الـ index موجوداً
+//     }
+// });
 
 
 
@@ -61,6 +61,12 @@ userSchema.pre('save', async function() {
 userSchema.methods.comparePassword = async function(candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
 };
+
+
+
+
+
+
 
 
 

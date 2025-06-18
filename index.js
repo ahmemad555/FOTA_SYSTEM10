@@ -7,7 +7,7 @@ const path = require('path');
 // تهيئة متغيرات البيئة
 dotenv.config(); 
 
-const app = express();
+const app = express(); 
 const port = process.env.PORT || 3000; 
 
 // Middleware
@@ -85,4 +85,28 @@ app.use((err, req, res, next) => {
         process.exit(1);
     }
 })();
+
+
+
+
+
+
+
+
+const User = require('./models/user'); // أو المسار المناسب
+
+async function removeUserIndexes() {
+  try {
+    await User.collection.dropIndex("userId_1"); // اسم الـ index غالبًا بيبقى بهذا الشكل: اسم_الحقل_1
+    console.log("Index userId_1 has been removed.");
+  } catch (error) {
+    if (error.codeName === 'IndexNotFound') {
+      console.log("Index not found. No action taken.");
+    } else {
+      console.error("Error while removing index:", error);
+    }
+  }
+}
+ 
+// removeUserIndexes();
  
