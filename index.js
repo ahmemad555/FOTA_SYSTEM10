@@ -97,7 +97,7 @@ const User = require('./models/user'); // أو المسار المناسب
 
 async function removeUserIndexes() {
   try {
-    await User.collection.dropIndex("userId_1"); // اسم الـ index غالبًا بيبقى بهذا الشكل: اسم_الحقل_1
+    await User.collection.dropIndex("email_1"); // اسم الـ index غالبًا بيبقى بهذا الشكل: اسم_الحقل_1
     console.log("Index userId_1 has been removed.");
   } catch (error) {
     if (error.codeName === 'IndexNotFound') {
