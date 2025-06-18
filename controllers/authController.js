@@ -83,7 +83,7 @@ const authController = {
        
 
         // send verification email
-        await sendVerificationEmail(email, name, `${process.env.BASE_URL}/auth/verify/${verificationToken}`);
+        await sendVerificationEmail(email, name, `${process.env.BASE_URL}/api/auth/verify-email/${verificationToken}`);
         res.status(201).json({
             success: true,
             message: 'user created successfully',
@@ -146,7 +146,6 @@ const authController = {
                 res.end(msg);      
                 return;
             }   
-            const hashedPassword=bcrypt.hashSync(password, 10); 
      
             existingUser.verified=true;
             await existingUser.save();
