@@ -3,8 +3,10 @@ const router = express.Router();
 const { auth } = require('../middlewares/jwt');
 const checkRole = require('../middlewares/checkRole');
 const { upload } = require('../utils/fileUpload');
+const uploadFileToGoogleDrive = require('../utils/googleDrive');
+const uploadController = require('../controllers/uploadController');
 // 'application/octet-stream', 'application/hex
-const uploadImage = upload(['application/octet-stream', 'application/hex','image/jpeg', 'image/png', 'image/jpg','image/webp','image/gif']);
+const uploadImage = upload(['application/octet-stream', 'application/hex']);
 // router.use(auth); // حماية جميع routes الكورسات
 
 // routes للمدير والمحاضر
@@ -12,13 +14,8 @@ router.post('/fw',
     // auth,
     // checkRole('manager', ''), 
     uploadImage.single('fw'), // middleware لرفع الصورة
-    (req,res,next)=>{
-        res.json({
-            success:true,
-            message:"file uploaded successfully",
-            data:req.file
-        })
-    }
+    uploadFileToGoogleDrive,
+    uploadController.upload
 );
 
 router.put('/:id', 
@@ -28,19 +25,13 @@ router.put('/:id',
 );
 
 // routes للمدير فقط
-router.delete('/:id', 
-    auth,
-    checkRole('manager'), 
-);
+// router.delete('/:id', 
+//     auth,
+//     checkRole('manager'), 
+// );
 
 // routes عامة (مع التحقق من تسجيل الدخول)
-router.get('/', (req,res)=>{
-    res.json({
-        success:true,
-        message:"file uploaded successfully",
-        data:req.file
-    })
-});
+router.get('/', uploadController.getFiles);
 // router.get('/:id', courseController.getCourse
 
 // );
