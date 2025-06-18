@@ -24,6 +24,9 @@
             <button type="submit">Register</button>
             <div class="error" id="error"></div>
         </form>
+        <div class="register-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
     </div>
     <script>
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
@@ -35,7 +38,7 @@
             errorDiv.textContent = '';
             try {
                 // https://fota-five.vercel.app/api/auth/register
-                const response = await fetch('http://localhost:4000/api/auth/register', {
+                const response = await fetch('https://fota-five.vercel.app/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password, name })

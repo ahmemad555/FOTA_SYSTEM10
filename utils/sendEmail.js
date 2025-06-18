@@ -12,7 +12,7 @@ const sendEmail = async ({ email, subject, message, html }) => {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_APP_PASSWORD // استخدم كلمة مرور التطبيق من Gmail
         }
-    });
+    }); 
 
     // إعداد خيارات الرسالة
     const mailOptions = {

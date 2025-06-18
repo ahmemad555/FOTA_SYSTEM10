@@ -3,119 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - FOTA System</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f4f4f4; 
-            margin: 0;
-            padding: 0;
+        .auth-container {
+            min-height: calc(100vh - 70px);
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
-        .container { 
-            max-width: 400px; 
-            width: 90%;
-            background: #fff; 
-            padding: 30px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+
+        .auth-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            animation: slideUp 3s ease;
         }
-        h2 { 
-            text-align: center; 
-            margin-bottom: 24px;
-            color: #333;
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h2 {
+            color: var(--dark-color);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            position: relative;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
+
+        .form-group label {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 0 0.5rem;
+            color: var(--secondary-color);
+            transition: all 0.3s;
+            pointer-events: none;
         }
-        input[type="text"], 
-        input[type="password"] { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            box-sizing: border-box;
-            font-size: 16px;
+
+        .form-control {
+            padding: 1rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.3s;
         }
-        input[type="text"]:focus, 
-        input[type="password"]:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
         }
-        button { 
-            width: 100%; 
-            padding: 12px; 
-            background: #007bff; 
-            color: #fff; 
-            border: none; 
-            border-radius: 4px; 
-            font-size: 16px; 
-            cursor: pointer;
-            transition: background-color 0.3s;
+
+        .form-control:focus + label,
+        .form-control:not(:placeholder-shown) + label {
+            top: 0;
+            font-size: 0.8rem;
+            color: var(--primary-color);
         }
-        button:hover { 
-            background: #0056b3; 
+
+        .form-control::placeholder {
+            color: transparent;
         }
-        .error { 
-            color: #dc3545; 
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
         }
-        .success {
-            color: #28a745;
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .register-link {
-            text-align: center;
-            margin-top: 20px;
+
+        .remember-me input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            accent-color: var(--primary-color);
         }
-        .register-link a {
-            color: #007bff;
+
+        .forgot-password {
+            color: var(--primary-color);
             text-decoration: none;
         }
-        .register-link a:hover {
+
+        .forgot-password:hover {
             text-decoration: underline;
+        }
+
+        .auth-button {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .auth-button:active {
+            transform: translateY(0);
+        }
+
+        .auth-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255,255,255,0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .auth-button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .social-login p {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .social-login p::before,
+        .social-login p::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #e1e1e1;
+        }
+
+        .social-login p::before {
+            left: 0;
+        }
+
+        .social-login p::after {
+            right: 0;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e1e1e1;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .social-button:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .social-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 2rem;
+            }
+
+            .auth-header h2 {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Add these styles to your existing styles */
+        .modal-subtitle {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        #forgotPasswordForm {
+            margin-top: 1.5rem;
+        }
+
+        #forgotPasswordForm .alert {
+            margin-top: 1rem;
+        }
+
+        .modal-content {
+            animation: modalSlideUp 0.3s ease;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="userId">User ID</label>
-                <input type="text" id="userId" required />
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">FOTA System</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="upload.html">Upload</a>
+                <a href="login.html">Login</a>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required />
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Please enter your credentials to login</p>
             </div>
-            <button type="submit">Login</button>
-            <div id="message"></div>
-        </form>
-        <div class="register-link">
-            Don't have an account? <a href="register.html">Register here</a>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <input type="email" id="email" class="form-control" placeholder=" " required />
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" class="form-control" placeholder=" " required />
+                    <label for="password">Password</label>
+                </div>
+
+                <div class="remember-forgot">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" />
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="auth-button">Login</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="register.html">Sign up</a>
+            </div>
+
+            <div class="social-login">
+                <p>Or continue with</p>
+                <div class="social-buttons">
+                    <button class="social-button">
+                        <img src="images/google.svg" alt="Google" />
+                    </button>
+                    <button class="social-button">
+                        <img src="images/github.svg" alt="GitHub" />
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content">
+            <button class="modal-close" id="forgotPasswordClose">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">Reset Password</h3>
+                <p class="modal-subtitle">Enter your email address and we'll send you instructions to reset your password.</p>
+            </div>
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <input type="email" id="resetEmail" class="form-control" placeholder=" " required />
+                    <label for="resetEmail">Email Address</label>
+                </div>
+                <button type="submit" class="auth-button">Send Reset Link</button>
+            </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        const loginForm = document.getElementById('loginForm');
+        const status = document.createElement('div');
+        status.className = 'alert';
+        loginForm.appendChild(status);
+
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const userId = document.getElementById('userId').value;
+            
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const messageDiv = document.getElementById('message');
             
             try {
                 const response = await fetch('https://fota-five.vercel.app/api/auth/login', {
@@ -123,38 +391,120 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ userId, password })
+                    body: JSON.stringify({ email, password })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Store the token or user data in localStorage
                     localStorage.setItem('userData', JSON.stringify(data));
-                    messageDiv.className = 'success';
-                    messageDiv.textContent = 'Login successful! Redirecting...';
-                    console.log( await response.json()));
+                    status.className = 'alert alert-success';
+                    status.textContent = 'Login successful! Redirecting...';
                     
-                    // Redirect to dashboard or home page after successful login
                     setTimeout(() => {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = './upload.html';
                     }, 1500);
                 } else {
-                    messageDiv.className = 'error';
-                    messageDiv.textContent = data.message || 'Login failed. Please check your credentials.';
+                    throw new Error(data.message || 'Login failed');
                 }
             } catch (error) {
-                messageDiv.className = 'error';
-                messageDiv.textContent = 'An error occurred. Please try again later.';
+                status.className = 'alert alert-danger';
+                status.textContent = error.message || 'An error occurred. Please try again.';
             }
         });
 
-        // Check if user is already logged in
-        window.addEventListener('load', function() {
-            const userData = localStorage.getItem('userData');
-            if (userData) {
-                // If user is already logged in, redirect to dashboard
-                window.location.href = '/dashboard.html';
+        // Add ripple effect to buttons
+        document.querySelectorAll('.auth-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const x = e.clientX - e.target.offsetLeft;
+                const y = e.clientY - e.target.offsetTop;
+
+                const ripple = document.createElement('span');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+
+                this.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Forgot Password Modal
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const forgotPasswordClose = document.getElementById('forgotPasswordClose');
+        const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+        const forgotPasswordLink = document.querySelector('.forgot-password');
+
+        // Open modal
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotPasswordModal.classList.add('show');
+        });
+
+        // Close modal
+        forgotPasswordClose.addEventListener('click', () => {
+            forgotPasswordModal.classList.remove('show');
+        });
+
+        // Close modal when clicking outside
+        forgotPasswordModal.addEventListener('click', (e) => {
+            if (e.target === forgotPasswordModal) {
+                forgotPasswordModal.classList.remove('show');
+            }
+        });
+
+        // Handle forgot password form submission
+        forgotPasswordForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('resetEmail').value;
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            try {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+
+                const response = await fetch('https://fota-five.vercel.app/api/auth/requestChangePassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Show success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'alert alert-success';
+                    successMessage.textContent = 'Password reset instructions have been sent to your email.';
+                    forgotPasswordForm.appendChild(successMessage);
+
+                    // Clear form and close modal after 3 seconds
+                    setTimeout(() => {
+                        forgotPasswordForm.reset();
+                        forgotPasswordModal.classList.remove('show');
+                        successMessage.remove();
+                    }, 3000);
+                } else {
+                    throw new Error(data.message || 'Failed to send reset instructions');
+                }
+            } catch (error) {
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'alert alert-danger';
+                errorMessage.textContent = error.message || 'An error occurred. Please try again.';
+                forgotPasswordForm.appendChild(errorMessage);
+
+                setTimeout(() => {
+                    errorMessage.remove();
+                }, 3000);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
             }
         });
     </script>
