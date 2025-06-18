@@ -87,6 +87,7 @@ const authController = {
         res.status(201).json({
             success: true,
             message: 'user created successfully',
+            token:verificationToken,
             data: user
         });
 

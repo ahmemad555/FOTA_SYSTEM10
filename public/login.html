@@ -397,7 +397,8 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    localStorage.setItem('userData', JSON.stringify(data));
+                    localStorage.setItem('userData', JSON.stringify(data.user));
+                    localStorage.setItem('token', data.token);
                     status.className = 'alert alert-success';
                     status.textContent = 'Login successful! Redirecting...';
                     

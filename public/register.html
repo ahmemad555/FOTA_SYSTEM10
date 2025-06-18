@@ -48,8 +48,9 @@
                     throw new Error(data.message || 'Registration failed');
                 }
                 localStorage.setItem('registerResult', JSON.stringify(data));
+                localStorage.setItem('token', data.token);
                 console.log(data);
-                // window.location.href = '/login.html';
+                window.location.href = '/login.html';
             } catch (err) {
                 errorDiv.textContent = err.message;
             }

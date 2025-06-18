@@ -11,10 +11,11 @@ const uploadImage = upload(['application/octet-stream', 'application/hex']);
 
 // routes للمدير والمحاضر
 router.post('/fw', 
-    // auth,
+    auth,
     // checkRole('manager', ''), 
     uploadImage.single('fw'), // middleware لرفع الصورة
     uploadFileToGoogleDrive,
+
     uploadController.upload
 );
 
