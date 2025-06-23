@@ -9,7 +9,7 @@ const uploadController = require('../controllers/uploadController');
 // const uploadImage = upload(['application/octet-stream', 'application/hex']);
 // router.use(auth); // حماية جميع routes الكورسات
 
-const railWayUrl='http://localhost:4000';
+const railWayUrl='https://fotasystem10-production.up.railway.app';
 // upload firmware
 const multer = require('multer');
 const upload = multer({
@@ -43,12 +43,9 @@ router.post('/fw',
         const fileUrl=`${railWayUrl}/uploads/${req.file.filename}`;
         req.fileUrl=fileUrl;
         req.fileId=req.file.filename;
-        res.json({
-            success: true,
-            fileUrl,
-            fileId:req.fileId
-        })
-    }
+        next();
+    },
+    uploadController.upload
 );
 
 // router.put('/:id', 
