@@ -16,8 +16,9 @@
     "path": "^0.12.7"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "build": "node index.js"
-  }
+  "start": "node index.js",
+  "dev": "nodemon index.js",
+  "build": "echo \"No build step needed\""
+}
+
 }
