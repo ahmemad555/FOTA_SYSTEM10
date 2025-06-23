@@ -41,8 +41,14 @@ const getFiles= asyncHandler(async (req, res) => {
     const files = await File.find({});
     // get the last file 
     const lastFile = files[files.length - 1];
- 
-    res.redirect(lastFile.fileUrl);
+    if(lastFile){
+        res.redirect(lastFile.fileUrl);
+    }else{
+        res.status(404).json({
+            success: false,
+            message: 'No files found'
+        });
+    }
 });
 
 
