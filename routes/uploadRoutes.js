@@ -1,22 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const { auth } = require('../middlewares/jwt');
-const checkRole = require('../middlewares/checkRole');
-// const { upload } = require('../utils/fileUpload');
-const uploadFileToGoogleDrive = require('../utils/googleDrive');
 const uploadController = require('../controllers/uploadController');
-// 'application/octet-stream', 'application/hex
-// const uploadImage = upload(['application/octet-stream', 'application/hex']);
-// router.use(auth); // حماية جميع routes الكورسات
 
-const railWayUrl='https://fotasystem10-production.up.railway.app';
-// upload firmware
+const railWayUrl = 'https://fotasystem10-production.up.railway.app';
+
 const multer = require('multer');
+
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
-            req.fileDestination='public/uploads';
-            cb(null, 'public/uploads');
+            req.fileDestination = 'uploads';  // خليها uploads مش public/uploads
+            cb(null, 'uploads');
         },
         filename: function (req, file, cb) {
             cb(null, Date.now() + '-' + file.originalname);
@@ -26,46 +21,33 @@ const upload = multer({
         if (file.mimetype === 'application/octet-stream' || file.mimetype === 'application/hex') {
             cb(null, true);
         } else {
-            cb(null, false);
+            cb(new Error('Invalid file type. Only .bin or .hex allowed!'), false);
         }
     }
 });
 
-// routes للمدير والمحاضر
+// POST /api/upload/fw
 router.post('/fw', 
     auth,
-    // checkRole('manager', ''), 
-    upload.single('fw'), // middleware لرفع الصورة
-    // uploadFileToGoogleDrive,
+    upload.single('fw'), 
+    (req, res, next) => {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: 'No file uploaded or invalid file type.'
+            });
+        }
 
-    (req,res,next)=>{
-        console.log(req.fileDestination);
-        const fileUrl=`${railWayUrl}/uploads/${req.file.filename}`;
-        req.fileUrl=fileUrl;
-        req.fileId=req.file.filename;
-       // res.send('file uploaded successfully');
-       next();
+        const fileUrl = `${railWayUrl}/uploads/${req.file.filename}`;
+        req.fileUrl = fileUrl;
+        req.fileId = req.file.filename;
+
+        next();
     },
     uploadController.upload
 );
 
-// router.put('/:id', 
-//     auth,
-//     checkRole('manager'), 
-//     uploadImage.single('image'), // middleware لرفع الصورة
-// );
-
-// routes للمدير فقط
-// router.delete('/:id', 
-//     auth,
-//     checkRole('manager'), 
-// );
-
-// routes عامة (مع التحقق من تسجيل الدخول)
+// GET /api/upload
 router.get('/', uploadController.getFiles);
-// router.get('/:id', courseController.getCourse
 
-// );
-
-
-module.exports = router; 
+module.exports = router;
