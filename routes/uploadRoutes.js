@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { auth } = require('../middlewares/jwt');
 const uploadController = require('../controllers/uploadController');
+const multer = require('multer');
 
 const railWayUrl = 'https://fotasystem10-production.up.railway.app';
 
-const multer = require('multer');
-
+// Multer إعداد
 const upload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -26,7 +26,7 @@ const upload = multer({
     }
 });
 
-// POST /api/upload/fw
+// ✅ رفع ملف الفيرم وير
 router.post('/fw',
     auth,
     upload.single('fw'),
@@ -47,10 +47,10 @@ router.post('/fw',
     uploadController.upload
 );
 
-// GET /api/upload
+// ✅ عرض كل الملفات
 router.get('/', uploadController.getFiles);
 
-// ✅ New Route → GET latest firmware
+// ✅ استرجاع أحدث فيرم وير
 router.get('/latest', uploadController.getLatestFirmware);
 
 module.exports = router;

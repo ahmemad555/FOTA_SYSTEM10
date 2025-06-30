@@ -4,18 +4,20 @@ const fs = require('fs');
 const path = require('path');
 
 const railWayUrl = 'https://fotasystem10-production.up.railway.app';
-const uploadsDir = path.join(__dirname, '../uploads');
 
+// ✅ رفع ملف جديد
 const upload = asyncHandler(async (req, res) => {
     const fileId = req.fileId;
     const fileUrl = req.fileUrl;
     const name = req.body.name;
+
     if (!name) {
         return res.status(400).json({
             success: false,
             message: 'Name is required'
         });
     }
+
     const file = new File({
         name,
         fileUrl,
@@ -30,6 +32,7 @@ const upload = asyncHandler(async (req, res) => {
     });
 });
 
+// ✅ جلب كل الملفات
 const getFiles = asyncHandler(async (req, res) => {
     const files = await File.find({});
     const lastFile = files[files.length - 1];
@@ -47,7 +50,10 @@ const getFiles = asyncHandler(async (req, res) => {
     }
 });
 
+// ✅ جلب أحدث Firmware .bin
 const getLatestFirmware = (req, res) => {
+    const uploadsDir = path.join(__dirname, '../uploads');
+
     fs.readdir(uploadsDir, (err, files) => {
         if (err) {
             return res.status(500).json({ success: false, message: 'Error reading upload folder' });
