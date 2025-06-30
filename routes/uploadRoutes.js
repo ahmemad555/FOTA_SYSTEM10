@@ -50,4 +50,7 @@ router.post('/fw',
 // GET /api/upload
 router.get('/', uploadController.getFiles);
 
+// ✅ New Route → GET latest firmware
+router.get('/latest', uploadController.getLatestFirmware);
+
 module.exports = router;
