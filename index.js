@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const connectMongoose = require("./utils/connectMongoose");
 const Logger = require("./utils/logger");
 const path = require('path');
+
 // تهيئة متغيرات البيئة
 dotenv.config(); 
 
@@ -13,7 +14,6 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cors());
 
 // Logging middleware
@@ -25,21 +25,20 @@ app.use((req, res, next) => {
     });
     next();
 });
- 
-// Routes
 
-const authRoutes = require("./routes/authRoutes");
-
-const userRoutes = require("./routes/userRoutes");
-
-const uploadRoutes=require("./routes/uploadRoutes")
-app.use('/', express.static(path.join(__dirname, 'public')));
+// ✅ 🟢 أهو السطر اللي يهمك:
 app.use('/uploads', express.static('uploads'));
+
+// Routes
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 app.use("/api/auth", authRoutes); 
 app.use("/api/users", userRoutes);
-app.use("/api/upload",uploadRoutes)
+app.use("/api/upload", uploadRoutes);
 
+// Default Not Found Route
 app.get("*", (req, res) => { 
     Logger.info('Root endpoint accessed');  
     res.send("not found api");
@@ -47,7 +46,6 @@ app.get("*", (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    // تسجيل تفاصيل الخطأ
     Logger.error('Server Error:', {
         message: err.message,
         stack: err.stack,
@@ -59,7 +57,6 @@ app.use((err, req, res, next) => {
         query: req.query
     });
     
-    // إرسال رسالة الخطأ للمستخدم
     res.status(err.statusCode || 500).json({
         success: false,
         message: err.message || 'حدث خطأ في الخادم',
@@ -70,10 +67,7 @@ app.use((err, req, res, next) => {
 // تشغيل السيرفر والاتصال بقاعدة البيانات
 (async () => {
     try {
-        // الاتصال بقاعدة البيانات
         await connectMongoose.connectDB(); 
-        
-        // تشغيل السيرفر
         app.listen(port, () => {
             Logger.info(`🚀 Server is running on port ${port}`);
         });
@@ -85,28 +79,3 @@ app.use((err, req, res, next) => {
         process.exit(1);
     }
 })();
-
-
-
-
-
-
-
-
-const User = require('./models/user'); // أو المسار المناسب
-
-async function removeUserIndexes() {
-  try {
-    await User.collection.dropIndex("email_1"); // اسم الـ index غالبًا بيبقى بهذا الشكل: اسم_الحقل_1
-    console.log("Index userId_1 has been removed.");
-  } catch (error) {
-    if (error.codeName === 'IndexNotFound') {
-      console.log("Index not found. No action taken.");
-    } else {
-      console.error("Error while removing index:", error);
-    }
-  }
-}
- 
-// removeUserIndexes();
- 
