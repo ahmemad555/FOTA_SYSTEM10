@@ -175,7 +175,7 @@
             formData.append('name', name);
 
             try {
-                const response = await fetch('https://fotasystem10-production.up.railway.app/api/upload/fw ', {
+                const response = await fetch('https://fota-five.vercel.app/api/upload/fw', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`

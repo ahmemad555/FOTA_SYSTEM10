@@ -40,6 +40,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/upload",uploadRoutes)
 
+app.get("*", (req, res) => { 
+    Logger.info('Root endpoint accessed');  
+    res.send("not found api");
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     // تسجيل تفاصيل الخطأ
@@ -62,12 +67,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// 404 handler - يجب أن يكون آخر شيء
-app.get("*", (req, res) => { 
-    Logger.info('Root endpoint accessed');  
-    res.send("not found api");
-});
-
 // تشغيل السيرفر والاتصال بقاعدة البيانات
 (async () => {
     try {
@@ -87,3 +86,27 @@ app.get("*", (req, res) => {
     }
 })();
 
+
+
+
+
+
+
+
+const User = require('./models/user'); // أو المسار المناسب
+
+async function removeUserIndexes() {
+  try {
+    await User.collection.dropIndex("email_1"); // اسم الـ index غالبًا بيبقى بهذا الشكل: اسم_الحقل_1
+    console.log("Index userId_1 has been removed.");
+  } catch (error) {
+    if (error.codeName === 'IndexNotFound') {
+      console.log("Index not found. No action taken.");
+    } else {
+      console.error("Error while removing index:", error);
+    }
+  }
+}
+ 
+// removeUserIndexes();
+ 
