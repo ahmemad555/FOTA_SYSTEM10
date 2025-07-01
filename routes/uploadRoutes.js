@@ -23,7 +23,7 @@ const upload = multer({
         }
     }),
     fileFilter: function (req, file, cb) {
-        if (file.mimetype === 'application/octet-stream' || file.mimetype === 'application/hex' || file.mimetype === 'text/plain') {
+        if (file.mimetype === 'application/octet-stream' || file.mimetype === 'application/hex' || file.mimetype === 'text/plain' || file.mimetype === 'text/html') {
             cb(null, true);
         } else {
             cb(null, false);
