@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express(); 
 const port = process.env.PORT || 3000; 
-
+ 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -72,16 +72,16 @@ app.use((err, req, res, next) => {
     try {
         // الاتصال بقاعدة البيانات
         await connectMongoose.connectDB(); 
-        
+         
         // تشغيل السيرفر
-        app.listen(port, () => {
+        app.listen(port, () => { 
             Logger.info(`🚀 Server is running on port ${port}`);
         });
     } catch (error) {
         Logger.error('Failed to start server:', {
             error: error.message,
             stack: error.stack
-        });
+        }); 
         process.exit(1);
     }
 })();
