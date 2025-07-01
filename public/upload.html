@@ -173,10 +173,9 @@
             const formData = new FormData();
             formData.append('fw', file);
             formData.append('name', name);
-            const localurl='http://localhost:4000/api/upload/fw';
-            const railwayurl='https://fotasystem10-production.up.railway.app/api/upload/fw';
+
             try {
-                const response = await fetch(railwayurl, {
+                const response = await fetch('https://fotasystem10-production.up.railway.app/api/upload/fw ', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`

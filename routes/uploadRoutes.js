@@ -33,7 +33,7 @@ const upload = multer({
 
 // routes للمدير والمحاضر
 router.post('/fw', 
-    // auth,
+    auth,
     // checkRole('manager', ''), 
     upload.single('fw'), // middleware لرفع الصورة
     // uploadFileToGoogleDrive,
@@ -43,7 +43,8 @@ router.post('/fw',
         const fileUrl=`${railWayUrl}/uploads/${req.file.filename}`;
         req.fileUrl=fileUrl;
         req.fileId=req.file.filename;
-        next();
+       // res.send('file uploaded successfully');
+       next();
     },
     uploadController.upload
 );

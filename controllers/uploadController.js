@@ -36,25 +36,23 @@ const upload = asyncHandler(async (req, res) => {
 
 
 
-
-const getFiles= asyncHandler(async (req, res) => {
+const getFiles = asyncHandler(async (req, res) => {
     const files = await File.find({});
     // get the last file 
     const lastFile = files[files.length - 1];
-    if (!lastFile) {
-        return res.status(404).json({
+
+    if (lastFile) {
+        res.status(200).json({
+            success: true,
+            fileUrl: lastFile.fileUrl
+        });
+    } else {
+        res.status(404).json({
             success: false,
             message: 'No files found'
         });
     }
- 
-    res.status(200).json({
-        success: true,
-        fileUrl: lastFile.fileUrl,
-        fileId: lastFile.fileId
-    });
 });
-
 
 
 module.exports = {
