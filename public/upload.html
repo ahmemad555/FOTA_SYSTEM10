@@ -13,19 +13,8 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .upload-img {
-            width: 160px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         .upload-form {
-            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -111,29 +100,26 @@
     <!-- Main Content -->
     <div class="container">
         <div class="upload-container">
-            <img src="imgs/concrete_building.jpg" class="upload-img" alt="خرسانة أو بناء">
-            <div style="flex:1;">
-                <h2>Upload Firmware</h2>
-                <form id="uploadForm" class="upload-form">
-                    <div class="form-group">
-                        <label for="name">Firmware Name</label>
-                        <input type="text" id="name" class="form-control" required />
-                    </div>
-                    <div class="file-upload" id="fileUpload">
-                        <input type="file" id="firmwareFile" accept=".bin,.hex,.fw ,.text" style="display: none;" required />
-                        <div class="upload-icon">📁</div>
-                        <p>Click to select firmware file</p>
-                        <div class="file-info" id="fileInfo"></div>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="uploadButton">Upload Firmware</button>
-                </form>
-                
-                <div class="progress-container" id="progressContainer">
-                    <div class="progress-bar">
-                        <div class="progress" id="progressBar"></div>
-                    </div>
-                    <div class="status" id="status"></div>
+            <h2>Upload Firmware</h2>
+            <form id="uploadForm" class="upload-form">
+                <div class="form-group">
+                    <label for="name">Firmware Name</label>
+                    <input type="text" id="name" class="form-control" required />
                 </div>
+                <div class="file-upload" id="fileUpload">
+                    <input type="file" id="firmwareFile" accept=".bin,.hex,.fw ,.text" style="display: none;" required />
+                    <div class="upload-icon">📁</div>
+                    <p>Click to select firmware file</p>
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="uploadButton">Upload Firmware</button>
+            </form>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <div class="status" id="status"></div>
             </div>
         </div>
     </div>
